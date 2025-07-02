@@ -2,8 +2,9 @@ import { useParams } from "react-router-dom";
 import Login from "../../components/Login Modal/Login";
 import ProductDisplay from "../../components/Products/ProductDisplay";
 import { useLoginModal } from "../../context/LoginModal";
+import type { FC } from "react";
 
-const ProductDetails = () => {
+const ProductDetails:FC = () => {
   const { openModal } = useLoginModal();
 
   const { id } = useParams<{ id: string }>();

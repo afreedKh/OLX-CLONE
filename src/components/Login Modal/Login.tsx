@@ -22,7 +22,7 @@ const Login: React.FC = () => {
         await signup({ name, email, password });
         toggleModal();
       } else if (signState == "login") {
-        await login({ name, email, password });
+        await login({ email, password });
         toggleModal();
       }
     } catch (error) {
@@ -83,7 +83,7 @@ const Login: React.FC = () => {
                   )}
 
                   {openModal && signState == "signup" && (
-                    <p className="font-bold text-3xl">Sinup with Email</p>
+                    <p className="font-bold text-3xl">Signup with Email</p>
                   )}
 
                   {!openModal && (
@@ -163,7 +163,7 @@ const Login: React.FC = () => {
                     <div className="flex items-center justify-center mt-3 relative">
                       {signState == "login" && (
                         <button
-                          type="submit"
+                          type="button"
                           onClick={handleSubmit}
                           className="border-2 w-96 h-12 text-center cursor-pointer font-bold bg-black text-white"
                         >
@@ -172,7 +172,7 @@ const Login: React.FC = () => {
                       )}
                       {signState == "signup" && (
                         <button
-                          type="submit"
+                          type="button"
                           onClick={handleSubmit}
                           className="border-2 w-96 h-12 text-center cursor-pointer font-bold bg-black text-white"
                         >

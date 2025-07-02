@@ -1,4 +1,4 @@
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { onAuthStateChanged, signOut, type User } from "firebase/auth";
 import {
   createContext,
   useContext,
@@ -9,11 +9,11 @@ import {
 import { auth } from "../Firebase/Firebase";
 
 type AuthContextType = {
-  user: any;
+  user: User | null;
   logout: () => Promise<void>;
 } | null;
 
-const AuthContext = createContext<AuthContextType>(null);
+const AuthContext = createContext<AuthContextType | null>(null);
 
 export const userAuth = () => useContext(AuthContext);
 
@@ -21,8 +21,9 @@ type AuthProviderProps = {
   children: ReactNode;
 };
 
+
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);

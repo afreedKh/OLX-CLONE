@@ -25,14 +25,20 @@ const provider = new GoogleAuthProvider();
 const storage = getStorage();
 const firestore = getFirestore();
 
+
+const USERS_COLLECTION = "user";
+const PRODUCTS_COLLECTION = "Products";
+
+
 const fetchFromFirestore = async () => {
   try {
-    const productsCollection = collection(firestore, "Products");
+    const productsCollection = collection(firestore, PRODUCTS_COLLECTION);
     const productDocuments = await getDocs(productsCollection);
-    const productList = productDocuments.docs.map((doc) => {
-      const data = doc.data();
-      return { ...data };
-    }) as Product[];
+
+    const productList: Product[] = productDocuments.docs.map((doc) => {
+      const data = doc.data() as Omit<Product, "id">;
+      return { id: doc.id, ...data };
+    });
     return productList;
   } catch (error) {
     console.error("error fetching from firestore");
@@ -54,13 +60,13 @@ const signup = async (userDetails: UserDetails) => {
       userDetails.password
     );
     const users = res.user;
-    await addDoc(collection(firestore, "user"), {
+    await addDoc(collection(firestore, USERS_COLLECTION), {
       id: users.uid,
       name: userDetails.name,
       email: users.email,
       authProvider: "local",
     });
-    Toastify("Login Successfully");
+    Toastify("Signup Successful");
   } catch (error) {
     Toastify("Error occured");
     console.error("Error signup ", error);
