@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { firestore } from "../../Firebase/Firebase";
 import { collection, doc, setDoc } from "firebase/firestore";
-import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { Toastify } from "../Toastify/Toastify";
 
 interface ProductTypes {
   title: string;
@@ -46,15 +46,6 @@ const Post = () => {
     reader.readAsDataURL(file);
   };
 
-  const notify = () =>
-    toast("Product added successfully", {
-      style: {
-        backgroundColor: "#0d9488",
-        color: "#fff",
-        fontWeight: "bold",
-      },
-    });
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -72,7 +63,7 @@ const Post = () => {
         id: newDocRef.id,
       });
 
-      notify();
+      Toastify("Product added successfully");
 
       navigate("/");
 

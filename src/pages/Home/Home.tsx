@@ -1,13 +1,11 @@
-import ProductList from "../../components/Products/ProductList"
-
-
+import ProductList from "../../components/Products/ProductList";
 
 const Home = () => {
   return (
     <div>
-      <ProductList/>
+      <ProductList />
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

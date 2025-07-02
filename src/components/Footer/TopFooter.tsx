@@ -61,11 +61,10 @@ const TopFooter = () => {
               <img className="w-5 " src={player} alt="player-img" />
             </li>
           </ul>
-           
-              <img className="w-40 mt-3 " src={google_play} alt="" />
-           
-              <img className="w-40" src={app_store} alt="" />
-            
+
+          <img className="w-40 mt-3 " src={google_play} alt="" />
+
+          <img className="w-40" src={app_store} alt="" />
         </div>
       </div>
     </div>

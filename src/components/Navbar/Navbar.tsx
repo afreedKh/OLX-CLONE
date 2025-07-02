@@ -7,37 +7,31 @@ import { useNavigate } from "react-router-dom";
 import { useLoginModal } from "../../context/LoginModal";
 import { userAuth } from "../../context/Auth";
 import avatar from "../../assets/avatar_4.png";
-import { toast } from "react-toastify";
+import { Toastify } from "../Toastify/Toastify";
 
 const Navbar = () => {
   const { toggleModal } = useLoginModal();
   const navigate = useNavigate();
-  const authContext = userAuth()
-  const user = authContext?.user
-  const logout =authContext?.logout
+  const authContext = userAuth();
+  const user = authContext?.user;
+  const logout = authContext?.logout;
 
-
-  const notify = () =>
-    toast("Logout Successfully", {
-      style: {
-        backgroundColor: "#0d9488",
-        color: "#fff",
-        fontWeight: "bold",
-      },
-    });
-
-  async function handleLogout(){
-     await logout?.() ;
-      navigate('/')
-      notify()
+  async function handleLogout() {
+    await logout?.();
+    navigate("/");
+    Toastify("Logout Successfully");
   }
-  
 
   return (
     <div className="bg-white shadow-[0_1px_4px_0_#0000001a]">
       <nav className="flex items-center w-full h-[72px] bg-[#002f3408] px-2 md:px-4">
         <div className="logo w-12 md:w-20 flex items-center h-16">
-          <img src={logo} alt="logo_img" className="w-10 md:w-14 m-auto cursor-pointer" onClick={()=>navigate('/')}/>
+          <img
+            src={logo}
+            alt="logo_img"
+            className="w-10 md:w-14 m-auto cursor-pointer"
+            onClick={() => navigate("/")}
+          />
         </div>
 
         <div className="location hidden md:flex items-center justify-between relative h-16 w-48 lg:w-72 mr-2">

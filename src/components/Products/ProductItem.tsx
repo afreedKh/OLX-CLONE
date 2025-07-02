@@ -28,7 +28,7 @@ export default function ProductItem() {
       <img src={spinner} alt="" className="w-14" />
     </div>
   ) : (
-    <div  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-6 gap-x-4 px-4 sm:px-12 ml-12 ">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-6 gap-x-4 px-4 sm:px-12 ml-12 ">
       {productList.map((product) => (
         <Link to={`/product-details/${product.id}`} key={product.id}>
           <Card

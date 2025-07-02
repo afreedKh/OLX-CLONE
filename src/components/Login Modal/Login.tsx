@@ -1,29 +1,44 @@
 import crossImage from "../../assets/ximage.png";
 import guitar from "../../assets/guitar.png";
 import google from "../../assets/google.png";
-import email from "../../assets/email.png";
+import emails from "../../assets/email.png";
 import { signInWithPopup } from "firebase/auth";
-import { auth, provider } from "../../Firebase/Firebase";
+import { auth, login, provider, signup } from "../../Firebase/Firebase";
 import { useLoginModal } from "../../context/LoginModal";
-import { toast } from "react-toastify";
+import { useState } from "react";
+import { Toastify } from "../Toastify/Toastify";
 
 const Login: React.FC = () => {
   const { toggleModal } = useLoginModal();
+  const [signState, setSignState] = useState<"login" | "signup">("login");
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
-  const notify = () =>
-      toast("Login Successfully", {
-        style: {
-          backgroundColor: "#0d9488",
-          color: "#fff",
-          fontWeight: "bold",
-        },
-      });
+  async function handleSubmit() {
+    try {
+      if (signState == "signup") {
+        await signup({ name, email, password });
+        toggleModal();
+      } else if (signState == "login") {
+        await login({ name, email, password });
+        toggleModal();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const toggleEmailAndPasswordModal = () => {
+    setOpenModal(!openModal);
+  };
 
   const handleClick = async (): Promise<void> => {
     try {
       await signInWithPopup(auth, provider);
       toggleModal();
-      notify()
+      Toastify("Login Successfully");
     } catch (error) {
       console.error(error);
     }
@@ -63,39 +78,135 @@ const Login: React.FC = () => {
                   <img className="w-30" src={guitar} alt="guitar_img" />
                 </div>
                 <div className="flex items-center justify-center mt-6">
-                  <p className="font-bold">
-                    Help us become one of the safest places{" "}
-                  </p>
+                  {openModal && signState == "login" && (
+                    <p className="font-bold text-3xl">Login with Email</p>
+                  )}
+
+                  {openModal && signState == "signup" && (
+                    <p className="font-bold text-3xl">Sinup with Email</p>
+                  )}
+
+                  {!openModal && (
+                    <p className="font-bold">
+                      Help us become one of the safest places{" "}
+                    </p>
+                  )}
                 </div>
                 <div className="flex items-center justify-center ">
-                  <p className="font-bold">to buy and sell </p>
+                  {!openModal && <p className="font-bold">to buy and sell </p>}
                 </div>
-                <div className="flex items-center justify-center mt-10 relative ">
-                  <img
-                    className="w-8 absolute left-13 cursor-pointer"
-                    src={google}
-                    alt="google_logo"
-                  />
-                  <button
-                    onClick={handleClick}
-                    className="border-2 w-96 h-12 text-center cursor-pointer font-bold"
-                  >
-                    Continue with Google
-                  </button>
+
+                {openModal && signState == "signup" && (
+                  <div className="flex items-center justify-center mt-10 relative ">
+                    <input
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      type="text"
+                      className="border-2 w-96 h-12  font-bold pl-3"
+                      placeholder="Name"
+                    />
+                  </div>
+                )}
+
+                <div className="flex items-center justify-center mt-3 relative ">
+                  {openModal ? (
+                    <input
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      type="email"
+                      className="border-2 w-96 h-12  font-bold pl-3"
+                      placeholder="Email"
+                    />
+                  ) : (
+                    <>
+                      <img
+                        className="w-8 absolute left-13 cursor-pointer"
+                        src={google}
+                        alt="google_logo"
+                      />
+                      <button
+                        onClick={handleClick}
+                        className="border-2 w-96 h-12 text-center cursor-pointer font-bold"
+                      >
+                        Continue with Google
+                      </button>
+                    </>
+                  )}
                 </div>
                 <div className="flex items-center justify-center mt-3 relative">
-                  <img
-                    className="w-8 absolute left-13 cursor-pointer"
-                    src={email}
-                    alt="email logo"
-                  />
-                  <input
-                    className="border-2 w-96 h-12 text-center cursor-pointer font-bold"
-                    type="text"
-                    disabled
-                    value="Login with Email"
-                  />
+                  {openModal ? (
+                    <input
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      type="password"
+                      className="border-2 w-96 h-12  font-bold pl-3"
+                      placeholder="Password"
+                    />
+                  ) : (
+                    <>
+                      <img
+                        className="w-8 absolute left-13 cursor-pointer"
+                        src={emails}
+                        alt="email logo"
+                      />
+                      <button
+                        className="border-2 w-96 h-12 text-center cursor-pointer font-bold"
+                        onClick={toggleEmailAndPasswordModal}
+                      >
+                        Login with Email
+                      </button>
+                    </>
+                  )}
                 </div>
+                {openModal && (
+                  <>
+                    <div className="flex items-center justify-center mt-3 relative">
+                      {signState == "login" && (
+                        <button
+                          type="submit"
+                          onClick={handleSubmit}
+                          className="border-2 w-96 h-12 text-center cursor-pointer font-bold bg-black text-white"
+                        >
+                          Login
+                        </button>
+                      )}
+                      {signState == "signup" && (
+                        <button
+                          type="submit"
+                          onClick={handleSubmit}
+                          className="border-2 w-96 h-12 text-center cursor-pointer font-bold bg-black text-white"
+                        >
+                          Signup
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="form-switch mt-10 text-center text-[#737373]">
+                      {signState == "login" && (
+                        <p>
+                          New to OLX?{" "}
+                          <span
+                            onClick={() => setSignState("signup")}
+                            className="ml-[6px] text-blue-600 font-medium cursor-pointer"
+                          >
+                            Sign up now
+                          </span>{" "}
+                        </p>
+                      )}
+                      {signState == "signup" && (
+                        <p>
+                          Already have account? {}
+                          <span
+                            onClick={() => setSignState("login")}
+                            className="ml-[6px] text-blue-600 font-medium cursor-pointer"
+                          >
+                            Login now
+                          </span>{" "}
+                        </p>
+                      )}
+                    </div>
+                  </>
+                )}
 
                 <div className="flex items-center justify-center mt-40">
                   <span className="font-extralight font-sans text-[12px]">
