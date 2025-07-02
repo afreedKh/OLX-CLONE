@@ -1,3 +1,6 @@
+import type { Timestamp } from "firebase/firestore";
+
+
 export interface Product {
   id: string;
   title: string;
@@ -6,5 +9,5 @@ export interface Product {
   location: string;
   image: string;
   category: string;
-  createdAt?: { seconds: number };
+  createdAt?: Timestamp;
 }
