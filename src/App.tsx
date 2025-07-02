@@ -1,13 +1,14 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import Sell from "./pages/Sell/Sell";
-import ProductDetails from "./pages/Product Detail/ProductDetails";
+import ProductDetails from "./pages/ProductDetails/ProductDetails";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
 import Layout from "./components/Layout/Layout";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import type { FC } from "react";
 
-const App = () => {
+const App:FC = () => {
   return (
     <>
       <Routes>
